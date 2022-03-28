@@ -111,6 +111,14 @@ public:
         backup = grpcClientB;
     }
 
+    std::string getBlock(std::string path) 
+    {
+        unsigned long blockAddr = std::stol(path);
+        unsigned long blockNum = floor(blockAddr / 4096);
+        std::string blockNumber = std::to_string(val);
+        return blockNumber;
+    }
+
     std::string doWrite(std::string path, std::string dataString)
     {
         //convert path to block number
