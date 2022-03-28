@@ -180,12 +180,50 @@ public:
 }
 
 int main(int argc, char** argv) {
+    std::string primaryAddr;
+    std::string backupAddr;
+    std::string arg_str_primary("--primary");
+    std::string arg_str_backup("--backup");
 
-    //server A address argv[1]
-    //server B address argv[2]
+    if (argc > 1) {
+        std::string arg_val = argv[1];
+        size_t start_pos = arg_val.find(arg_str_primary);
+        if (start_pos != std::string::npos) {
+            start_pos += arg_str_primary.size();
+            if (arg_val[start_pos] == '=') {
+                primaryAddr = arg_val.substr(start_pos + 1);
+            } else {
+                std::cout << "The only correct argument syntax is --primary="
+                          << std::endl;
+                return 0;
+            }
+        } else {
+            std::cout << "The only acceptable argument is --primary=" << std::endl;
+            return 0;
+        }
+
+        string arg_val = argv[2];
+        start_pos = arg_val.find(arg_str_backup);
+        if (start_pos != std::string::npos) {
+            start_pos += arg_str_backup.size();
+            if (arg_val[start_pos] == '=') {
+                backupAddr = arg_val.substr(start_pos + 1);
+            } else {
+                std::cout << "The only correct argument syntax is --backup="
+                          << std::endl;
+                return 0;
+            }
+        } else {
+            std::cout << "The only acceptable argument is --backupAddr=" << std::endl;
+            return 0;
+        }
+    } else {
+        primaryAddr = "localhost:50051";
+        backupAddr = "localhost:50052";
+    }
     
 
-    MainClient client(std::string(argv[1]), std::string(argv[2]));
+    MainClient client(std::string(primaryAddr), backupAddr);
     //Now client is running
 
 }
